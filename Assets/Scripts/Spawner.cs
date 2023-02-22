@@ -10,6 +10,11 @@ public class Spawner : MonoBehaviour
     protected virtual void Awake() 
     {
         remainingPrefabs = new List<WeightedPrefab>();
+    }
+
+    public void ResetPrefabs()
+    {
+        remainingPrefabs.Clear();
         spawnableSet.CopyTo(remainingPrefabs);
     }
 

@@ -61,6 +61,14 @@ public class Spawnable : MonoBehaviour
         }
     }
 
+    public void ChangeChildrenParent(Transform newParent)
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            transform.GetChild(i).parent = newParent;
+        }
+    }
+
     #if UNITY_EDITOR
     private void OnDrawGizmos() 
     {

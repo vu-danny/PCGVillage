@@ -9,6 +9,8 @@ public class Generator : Spawner
     private Queue<Spawner> spawnersQueue;
     private List<Bounds> spawnedBounds;
     private List<Spawner> subSpawnersContainer;
+    
+    [SerializeField] private bool refreshResult = true;
 
     protected override void Awake() 
     {
@@ -16,34 +18,65 @@ public class Generator : Spawner
         spawnersQueue = new Queue<Spawner>();
         spawnedBounds = new List<Bounds>();
         subSpawnersContainer = new List<Spawner>();
+        refreshResult = true;
     }
 
     private IEnumerator Start()
     {
         // Retrieve and spawn initial spawnable   
+        ResetPrefabs();
         GameObject initialPrefab = GetRandomSpawnablePrefab();
+        remainingPrefabs.Clear();
+        
         GameObject initialObject = Instantiate(initialPrefab);
         Spawnable initialSpawnable = initialObject.GetComponent<Spawnable>();
         initialSpawnable.PlaceRandomAnchorRelativeTo(transform);
+
+        // "Consume" remaining spawners
+        bool success = false;
+        while (true)
+        {
+            while (refreshResult || !success)
+            {
+                refreshResult = false;
+                success = SpawnRemainingPrefabs(initialSpawnable);
+                yield return null;
+            }
+            yield return null;
+        }
+        // initialSpawnable.ChangeChildrenParent(transform);
+        // Destroy(initialObject);
+    }
+
+    private bool SpawnRemainingPrefabs(Spawnable initialSpawnable)
+    {
+        ClearChildren();
+
+        spawnedBounds.Clear();
+        spawnersQueue.Clear();
+
         spawnedBounds.Add(initialSpawnable.GetTransformedBounds());
         EnqueueSubSpawners(initialSpawnable);
         
-        yield return new WaitForSeconds(0.1f);
-
-        // "Consume" remaining spawners
         while (spawnersQueue.Count > 0)
         {
             Spawner currentSpawner = spawnersQueue.Dequeue();
+            currentSpawner.ResetPrefabs();
             Spawnable currentSpawnable = currentSpawner.SpawnWithBoundsCheck(spawnedBounds.AsReadOnly());
+
             if (currentSpawnable != null)
             {
                 spawnedBounds.Add(currentSpawnable.GetTransformedBounds());
                 EnqueueSubSpawners(currentSpawnable);
-                yield return new WaitForSeconds(0.1f);
+                currentSpawnable.ChangeChildrenParent(transform);
+                Destroy(currentSpawnable.gameObject);
             }
+
+            if (currentSpawnable == null)
+                return false;
         }
 
-        Debug.Log("DONE");
+        return true;
     }
 
     private void DrawBounds(Bounds bounds)
@@ -55,6 +88,14 @@ public class Generator : Spawner
             {
                 Debug.DrawLine(corners[i], corners[j], Color.red, 1.0f);
             }
+        }
+    }
+
+    private void ClearChildren()
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(transform.GetChild(i).gameObject);
         }
     }
 
