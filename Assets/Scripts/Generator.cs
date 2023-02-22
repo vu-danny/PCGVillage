@@ -10,8 +10,9 @@ public class Generator : Spawner
     private List<Bounds> spawnedBounds;
     private List<Spawner> subSpawnersContainer;
 
-    private void Awake() 
+    protected override void Awake() 
     {
+        base.Awake();
         spawnersQueue = new Queue<Spawner>();
         spawnedBounds = new List<Bounds>();
         subSpawnersContainer = new List<Spawner>();
@@ -25,7 +26,6 @@ public class Generator : Spawner
         Spawnable initialSpawnable = initialObject.GetComponent<Spawnable>();
         initialSpawnable.PlaceRandomAnchorRelativeTo(transform);
         spawnedBounds.Add(initialSpawnable.GetTransformedBounds());
-
         EnqueueSubSpawners(initialSpawnable);
         
         yield return new WaitForSeconds(0.1f);
@@ -42,6 +42,8 @@ public class Generator : Spawner
                 yield return new WaitForSeconds(0.1f);
             }
         }
+
+        Debug.Log("DONE");
     }
 
     private void DrawBounds(Bounds bounds)

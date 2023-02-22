@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ae45b541df73b48b4a8e6ed20467d5, type: 3}
+  m_Name: House Set
+  m_EditorClassIdentifier: 
+  spawnablePrefabs:
+  - prefab: {fileID: 8777099923736240627, guid: 8b9cbe65cda8c2843b0f56ceaebfb431,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 2403591743903857980, guid: d81697b135d2b6349ac968e5b2ed2086,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 8740716571590289910, guid: bde10c87e5081ea499b1d0dd71f96aeb,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 239021971491516395, guid: c24ff7c8e37e365468864ac45e3d3074, type: 3}
+    weight: 1
+  - prefab: {fileID: 7489691663147887345, guid: dd6b9d76c52d2bb4482e2ff22374e98b,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 8798550058692791252, guid: d14575b1d093f714a8155a10cad8e1e6,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 1031889890596449252, guid: be4ed1aaa37a2e3449ac254d507e0104,
+      type: 3}
+    weight: 5

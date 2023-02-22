@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] protected List<WeightedPrefab> spawnablePrefabs;
+    [SerializeField] protected SpawnableSet spawnableSet;
+    protected List<WeightedPrefab> remainingPrefabs;
     
+    protected virtual void Awake() 
+    {
+        remainingPrefabs = new List<WeightedPrefab>();
+        spawnableSet.CopyTo(remainingPrefabs);
+    }
+
     // Returns spawnable if successfully spawned
     public Spawnable SpawnWithBoundsCheck(ReadOnlyCollection<Bounds> spawnedBounds)
     {
@@ -31,11 +38,14 @@ public class Spawner : MonoBehaviour
                     }
 
                     if (!intersectionFound)
+                    {
+                        remainingPrefabs.Clear();
                         return spawnable;
+                    }
                 }
             }
         }
-        while (spawnablePrefabs.Count > 0);
+        while (remainingPrefabs.Count > 0);
 
         return null;
     }
@@ -57,19 +67,19 @@ public class Spawner : MonoBehaviour
     protected GameObject GetRandomSpawnablePrefab()
     {
         int weightSum = 0;
-        foreach (WeightedPrefab prefab in spawnablePrefabs)
+        foreach (WeightedPrefab prefab in remainingPrefabs)
         {
             weightSum += prefab.weight;
         }
 
         int selectionValue = Random.Range(0, weightSum);
-        for (int i = 0; i < spawnablePrefabs.Count; i++)
+        for (int i = 0; i < remainingPrefabs.Count; i++)
         {
-            WeightedPrefab prefab = spawnablePrefabs[i];
+            WeightedPrefab prefab = remainingPrefabs[i];
             selectionValue -= prefab.weight;
             if (selectionValue < 0)
             {
-                spawnablePrefabs.RemoveAt(i);
+                remainingPrefabs.RemoveAt(i);
                 return prefab.prefab;
             }
         }
@@ -91,11 +101,4 @@ public class Spawner : MonoBehaviour
         );
     }
     #endif
-    
-    [System.Serializable]
-    protected struct WeightedPrefab
-    {
-        public GameObject prefab;
-        public int weight;
-    }
 }
