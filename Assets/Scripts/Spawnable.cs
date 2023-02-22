@@ -10,9 +10,9 @@ public class Spawnable : MonoBehaviour
     public bool PlaceRandomAnchorRelativeTo(Transform referenceTransform)
     {
         int anchorIndex = Random.Range(0, anchors.Count);
-        Transform anchorTransform = anchors[anchorIndex].transform;
-        transform.Rotate(referenceTransform.localEulerAngles - anchorTransform.eulerAngles, Space.Self);
-        transform.position = referenceTransform.position-anchorTransform.localPosition;
+        Transform anchorTransform = anchors[anchorIndex];
+        transform.rotation = referenceTransform.rotation * Quaternion.Inverse(anchorTransform.rotation);
+        transform.position = referenceTransform.position-(anchorTransform.position - transform.position);
         anchors.RemoveAt(anchorIndex);
         return anchors.Count > 0;
     }
