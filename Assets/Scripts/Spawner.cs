@@ -1,13 +1,40 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField] protected List<WeightedPrefab> spawnablePrefabs;
 
-    protected void Spawn()
+    // Returns spawnable if successfully spawned
+    protected Spawnable SpawnWithBoundsCheck(ReadOnlyCollection<Bounds> spawnedBounds)
     {
-        // TODO : implement and rename method
+        do
+        {
+            GameObject spawnedObject = SpawnRandomPrefab();
+            if (spawnedObject == null)
+                return null;
+            else
+            {
+                Spawnable spawnable = spawnedObject.GetComponent<Spawnable>();
+
+                bool intersectionFound = false;
+                foreach (Bounds bounds in spawnedBounds)
+                {
+                    if (spawnable.InterectsWith(bounds))
+                    {
+                        intersectionFound = true;
+                        break;
+                    }
+                }
+
+                if (!intersectionFound)
+                    return spawnable;
+            }
+        }
+        while (spawnablePrefabs.Count > 0);
+
+        return null;
     }
 
     protected GameObject SpawnRandomPrefab()
@@ -17,12 +44,9 @@ public class Spawner : MonoBehaviour
 
         if (prefabToSpawn == null)
             return null;
-        
-        // Compute its position
-        Vector3 spawnPosition = transform.position;
 
         // Spawn the element and return its instance
-        GameObject spawnedObject = Instantiate(prefabToSpawn, spawnPosition, Quaternion.LookRotation(transform.forward, transform.up));
+        GameObject spawnedObject = Instantiate(prefabToSpawn);
 
         return spawnedObject;
     }

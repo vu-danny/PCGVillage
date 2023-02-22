@@ -13,4 +13,24 @@ public class Spawnable : MonoBehaviour
         // TODO : implement
         return false;
     }
+    
+    public bool InterectsWith(Bounds otherBounds)
+    {
+        return bounds.Intersects(otherBounds);
+    }
+
+    #if UNITY_EDITOR
+    private void OnDrawGizmos() 
+    {
+        if (bounds.size.x < 0 || bounds.size.y < 0 || bounds.size.z < 0)
+        {
+            Gizmos.color = Color.Lerp(Color.white, Color.red, 0.75f);
+        }
+        else
+        {
+            Gizmos.color = Color.white;
+        }
+        Gizmos.DrawWireCube(bounds.center, bounds.size);
+    }
+    #endif
 }
