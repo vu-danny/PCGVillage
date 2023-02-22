@@ -369,6 +369,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8908642811834123075, guid: a64f2bf4d9e72854fa2dae72ea472434,
         type: 3}
+      propertyPath: spawnableSet
+      value: 
+      objectReference: {fileID: 11400000, guid: d817d7fabc9a8184baaccf453ee9c4dc,
+        type: 2}
+    - target: {fileID: 8908642811834123075, guid: a64f2bf4d9e72854fa2dae72ea472434,
+        type: 3}
       propertyPath: spawnablePrefabs.Array.data[0].weight
       value: 1
       objectReference: {fileID: 0}
@@ -1302,6 +1308,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8908642811834123075, guid: a64f2bf4d9e72854fa2dae72ea472434,
         type: 3}
+      propertyPath: spawnableSet
+      value: 
+      objectReference: {fileID: 11400000, guid: d817d7fabc9a8184baaccf453ee9c4dc,
+        type: 2}
+    - target: {fileID: 8908642811834123075, guid: a64f2bf4d9e72854fa2dae72ea472434,
+        type: 3}
       propertyPath: spawnablePrefabs.Array.data[6].prefab
       value: 
       objectReference: {fileID: 1031889890596449252}
@@ -1404,6 +1416,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8908642811834123075, guid: a64f2bf4d9e72854fa2dae72ea472434,
         type: 3}
+      propertyPath: spawnableSet
+      value: 
+      objectReference: {fileID: 11400000, guid: d817d7fabc9a8184baaccf453ee9c4dc,
+        type: 2}
+    - target: {fileID: 8908642811834123075, guid: a64f2bf4d9e72854fa2dae72ea472434,
+        type: 3}
       propertyPath: spawnablePrefabs.Array.data[6].prefab
       value: 
       objectReference: {fileID: 1031889890596449252}
@@ -1504,6 +1522,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8908642811834123075, guid: a64f2bf4d9e72854fa2dae72ea472434,
+        type: 3}
+      propertyPath: spawnableSet
+      value: 
+      objectReference: {fileID: 11400000, guid: d817d7fabc9a8184baaccf453ee9c4dc,
+        type: 2}
     - target: {fileID: 8908642811834123075, guid: a64f2bf4d9e72854fa2dae72ea472434,
         type: 3}
       propertyPath: spawnablePrefabs.Array.data[6].prefab
