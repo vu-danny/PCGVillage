@@ -22,10 +22,18 @@ public class Spawnable : MonoBehaviour
         return bounds.Intersects(otherBounds);
     }
 
+    public Bounds GetTransformedBounds()
+    {
+        Bounds transformedBounds = bounds;
+        transformedBounds.center += transform.position;
+        return transformedBounds;
+    }
+
     #if UNITY_EDITOR
     private void OnDrawGizmos() 
     {
-        if (bounds.size.x < 0 || bounds.size.y < 0 || bounds.size.z < 0)
+        Bounds drawnBounds = GetTransformedBounds();
+        if (drawnBounds.size.x < 0 || drawnBounds.size.y < 0 || drawnBounds.size.z < 0)
         {
             Gizmos.color = Color.Lerp(Color.white, Color.red, 0.75f);
         }
@@ -33,7 +41,7 @@ public class Spawnable : MonoBehaviour
         {
             Gizmos.color = Color.white;
         }
-        Gizmos.DrawWireCube(bounds.center, bounds.size);
+        Gizmos.DrawWireCube(drawnBounds.center, drawnBounds.size);
     }
     #endif
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] protected List<WeightedPrefab> spawnablePrefabs;
-
+    
     // Returns spawnable if successfully spawned
     protected Spawnable SpawnWithBoundsCheck(ReadOnlyCollection<Bounds> spawnedBounds)
     {
@@ -69,6 +69,21 @@ public class Spawner : MonoBehaviour
         
         return null;
     }
+
+    #if UNITY_EDITOR
+    private void OnDrawGizmos() 
+    {   
+        float arrowSize = 0.25f; 
+        UnityEditor.Handles.color = Color.cyan;
+        UnityEditor.Handles.ConeHandleCap(
+            0, 
+            transform.position + transform.forward * (arrowSize * 0.5f), 
+            transform.rotation, 
+            0.25f, 
+            EventType.Repaint
+        );    
+    }
+    #endif
     
     [System.Serializable]
     protected struct WeightedPrefab
