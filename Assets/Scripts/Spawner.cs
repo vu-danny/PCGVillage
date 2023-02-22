@@ -7,7 +7,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] protected List<WeightedPrefab> spawnablePrefabs;
     
     // Returns spawnable if successfully spawned
-    protected Spawnable SpawnWithBoundsCheck(ReadOnlyCollection<Bounds> spawnedBounds)
+    public Spawnable SpawnWithBoundsCheck(ReadOnlyCollection<Bounds> spawnedBounds)
     {
         do
         {
@@ -17,19 +17,22 @@ public class Spawner : MonoBehaviour
             else
             {
                 Spawnable spawnable = spawnedObject.GetComponent<Spawnable>();
-
-                bool intersectionFound = false;
-                foreach (Bounds bounds in spawnedBounds)
+                while (spawnable.PlaceRandomAnchorRelativeTo(transform))
                 {
-                    if (spawnable.InterectsWith(bounds))
+                    bool intersectionFound = false;
+                    foreach (Bounds bounds in spawnedBounds)
                     {
-                        intersectionFound = true;
-                        break;
+                        if (spawnable.InterectsWith(bounds))
+                        {
+                            intersectionFound = true;
+                            Destroy(spawnedObject);
+                            break;
+                        }
                     }
-                }
 
-                if (!intersectionFound)
-                    return spawnable;
+                    if (!intersectionFound)
+                        return spawnable;
+                }
             }
         }
         while (spawnablePrefabs.Count > 0);
@@ -60,11 +63,15 @@ public class Spawner : MonoBehaviour
         }
 
         int selectionValue = Random.Range(0, weightSum);
-        foreach (WeightedPrefab prefab in spawnablePrefabs)
+        for (int i = 0; i < spawnablePrefabs.Count; i++)
         {
+            WeightedPrefab prefab = spawnablePrefabs[i];
             selectionValue -= prefab.weight;
             if (selectionValue < 0)
+            {
+                spawnablePrefabs.RemoveAt(i);
                 return prefab.prefab;
+            }
         }
         
         return null;
