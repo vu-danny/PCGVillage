@@ -71,17 +71,17 @@ public class Spawner : MonoBehaviour
     }
 
     #if UNITY_EDITOR
-    private void OnDrawGizmos() 
-    {   
-        float arrowSize = 0.25f; 
+    private void OnDrawGizmosSelected() 
+    {
+        float arrowSize = 0.25f;
         UnityEditor.Handles.color = Color.cyan;
         UnityEditor.Handles.ConeHandleCap(
             0, 
             transform.position + transform.forward * (arrowSize * 0.5f), 
             transform.rotation, 
-            0.25f, 
+            arrowSize, 
             EventType.Repaint
-        );    
+        );
     }
     #endif
     

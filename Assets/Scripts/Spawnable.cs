@@ -43,5 +43,23 @@ public class Spawnable : MonoBehaviour
         }
         Gizmos.DrawWireCube(drawnBounds.center, drawnBounds.size);
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        foreach (Transform anchor in anchors)
+        {
+            if (anchor == null)
+                continue;
+            float arrowSize = 0.25f;
+            UnityEditor.Handles.color = Color.red;
+            UnityEditor.Handles.ConeHandleCap(
+                0, 
+                anchor.position + anchor.forward * (arrowSize * 0.5f), 
+                anchor.rotation, 
+                arrowSize, 
+                EventType.Repaint
+            );
+        }
+    }
     #endif
 }
