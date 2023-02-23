@@ -72,6 +72,17 @@ namespace Utility.UnityExtensions
         {
             return GeometryUtility.CalculateBounds(bounds.GetCorners(), transformation);
         }
+
+        public static Bounds TransformBounds(this Bounds bounds, Transform transform, float innerMargin = 0.0f)
+        {
+            Bounds transformedBounds = bounds.TransformBounds(Matrix4x4.TRS(
+                    transform.position, 
+                    transform.rotation, 
+                    Vector3.one
+                ));
+            transformedBounds.extents -= Vector3.one * innerMargin;
+            return transformedBounds;
+        }
     }
 }
 

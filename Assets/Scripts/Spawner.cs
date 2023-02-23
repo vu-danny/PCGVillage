@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
+using Utility.UnityExtensions;
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField] protected SpawnableSet spawnableSet;
     protected List<WeightedPrefab> remainingPrefabs;
+
+    [SerializeField] protected Bounds bounds;
     
     protected virtual void Awake() 
     {
@@ -16,6 +19,16 @@ public class Spawner : MonoBehaviour
     {
         remainingPrefabs.Clear();
         spawnableSet.CopyTo(remainingPrefabs);
+    }
+
+    public Bounds GetTransformedBounds(){
+        return bounds.TransformBounds(transform);
+    }
+
+    public bool InterectsWith(Bounds otherBounds)
+    {
+        Bounds transformedBounds = GetTransformedBounds();
+        return transformedBounds.Intersects(otherBounds);
     }
 
     // Returns spawnable if successfully spawned
@@ -32,14 +45,24 @@ public class Spawner : MonoBehaviour
                 while (spawnable.PlaceRandomAnchorRelativeTo(transform))
                 {
                     bool intersectionFound = false;
-                    foreach (Bounds bounds in spawnedBounds)
+                    foreach (Bounds sBounds in spawnedBounds)
                     {
-                        if (spawnable.InterectsWith(bounds))
+                        if (spawnable.InterectsWith(sBounds))
                         {
                             intersectionFound = true;
                             Destroy(spawnedObject);
-                            break;
                         }
+
+                        foreach(Bounds spawnerBound in spawnable.GetSpawnerBounds()){
+                            if (spawnerBound.Intersects(sBounds)){
+                                intersectionFound = true;
+                                Destroy(spawnedObject);
+                                break;
+                            }
+                        }
+
+                        if(intersectionFound)
+                            break;
                     }
 
                     if (!intersectionFound)
@@ -104,6 +127,17 @@ public class Spawner : MonoBehaviour
             arrowSize, 
             EventType.Repaint
         );
+
+        Bounds drawnBounds = GetTransformedBounds();
+        if (drawnBounds.size.x < 0 || drawnBounds.size.y < 0 || drawnBounds.size.z < 0)
+        {
+            Gizmos.color = Color.Lerp(Color.white, Color.red, 0.75f);
+        }
+        else
+        {
+            Gizmos.color = Color.cyan;
+        }
+        Gizmos.DrawWireCube(drawnBounds.center, drawnBounds.size);
     }
     #endif
 }

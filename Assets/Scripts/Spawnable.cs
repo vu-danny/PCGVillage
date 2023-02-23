@@ -33,18 +33,20 @@ public class Spawnable : MonoBehaviour
     
     public bool InterectsWith(Bounds otherBounds)
     {
-        return GetTransformedBounds().Intersects(otherBounds);
+        Bounds transformedBounds = GetTransformedBounds();
+        return transformedBounds.Intersects(otherBounds);
     }
 
-    public Bounds GetTransformedBounds()
-    {
-        Bounds transformedBounds = bounds.TransformBounds(Matrix4x4.TRS(
-                transform.position, 
-                transform.rotation, 
-                Vector3.one
-            ));
-        transformedBounds.extents -= Vector3.one * boundsInnerMargin;
-        return transformedBounds;
+    public Bounds GetTransformedBounds(){
+        return bounds.TransformBounds(transform, boundsInnerMargin);
+    }
+
+    public List<Bounds> GetSpawnerBounds(){
+        List<Bounds> subSpawnerBounds = new List<Bounds>();
+        foreach(Spawner subSpawner in subSpawners){
+            subSpawnerBounds.Add(subSpawner.GetTransformedBounds());
+        }
+        return subSpawnerBounds;
     }
 
     public void GetSubSpawnersInRandomOrder(ICollection<Spawner> resultsContainer)
