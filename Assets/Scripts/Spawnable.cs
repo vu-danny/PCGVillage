@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spawnable : MonoBehaviour
 {
     [Header("Positioning")]
-    [SerializeField] protected Bounds bounds;
+    [SerializeField] protected Transform[] boundsParts;
     [SerializeField] protected float boundsInnerMargin = 1e-3f;
     [SerializeField] protected List<Transform> anchors;
 
@@ -31,15 +31,23 @@ public class Spawnable : MonoBehaviour
     
     public bool InterectsWith(TransformableBounds otherBounds)
     {
-        TransformableBounds transformedBounds = GetTransformedBounds();
-        return transformedBounds.Intersects(otherBounds);
+        TransformableBounds[] transformedBounds = GetTransformedBounds();
+        for(int i = 0; i<transformedBounds.Length; i++){
+            if(transformedBounds[i].Intersects(otherBounds))
+                return true;
+        }
+        return false;
     }
 
-    public TransformableBounds GetTransformedBounds()
+    public TransformableBounds[] GetTransformedBounds()
     {
-        Bounds boundsWithInnerMargin = bounds;
-        boundsWithInnerMargin.extents -= Vector3.one * boundsInnerMargin; 
-        return new TransformableBounds(boundsWithInnerMargin, transform.localToWorldMatrix);
+        TransformableBounds[] transformedBounds = new TransformableBounds[boundsParts.Length];
+        Bounds baseBounds = new Bounds(Vector3.zero,Vector3.one);
+        for(int i = 0; i<boundsParts.Length; i++){
+            Matrix4x4 boundsPartMatrix = Matrix4x4.TRS(boundsParts[i].position, boundsParts[i].rotation, boundsParts[i].lossyScale - Vector3.one*boundsInnerMargin);
+            transformedBounds[i] = new TransformableBounds(baseBounds, boundsPartMatrix);
+        }
+        return transformedBounds;
     }
 
     public List<TransformableBounds> GetSpawnerBounds(){
@@ -76,19 +84,21 @@ public class Spawnable : MonoBehaviour
     #if UNITY_EDITOR
     private void OnDrawGizmos() 
     {
-        TransformableBounds transformedBounds = GetTransformedBounds();
-        Bounds drawnBounds = transformedBounds.bounds;
-
-        if (drawnBounds.size.x < 0 || drawnBounds.size.y < 0 || drawnBounds.size.z < 0)
-        {
-            Gizmos.color = Color.Lerp(Color.white, Color.red, 0.75f);
+        TransformableBounds[] transformedBounds = GetTransformedBounds();
+        for(int i = 0; i<transformedBounds.Length; i++){
+            Bounds drawnBounds = transformedBounds[i].bounds;
+            
+            if (drawnBounds.size.x < 0 || drawnBounds.size.y < 0 || drawnBounds.size.z < 0)
+            {
+                Gizmos.color = Color.Lerp(Color.white, Color.red, 0.75f);
+            }
+            else
+            {
+                Gizmos.color = Color.white;
+            }
+            Gizmos.matrix = transformedBounds[i].transformationMatrix;
+            Gizmos.DrawWireCube(drawnBounds.center, drawnBounds.size);
         }
-        else
-        {
-            Gizmos.color = Color.white;
-        }
-        Gizmos.matrix = transformedBounds.transformationMatrix;
-        Gizmos.DrawWireCube(drawnBounds.center, drawnBounds.size);
         Gizmos.matrix = Matrix4x4.identity;
     }
 

@@ -61,7 +61,7 @@ public class Generator : Spawner
         spawnersQueue.Clear();
         spawnerBounds.Clear();
 
-        spawnedBounds.Add(initialSpawnable.GetTransformedBounds());
+        spawnedBounds.AddRange(initialSpawnable.GetTransformedBounds());
         EnqueueSubSpawners(initialSpawnable);
     
         List<TransformableBounds> boundsToCheck = new List<TransformableBounds>();
@@ -80,7 +80,7 @@ public class Generator : Spawner
 
             if (currentSpawnable != null)
             {
-                spawnedBounds.Add(currentSpawnable.GetTransformedBounds());
+                spawnedBounds.AddRange(currentSpawnable.GetTransformedBounds());
                 
                 EnqueueSubSpawners(currentSpawnable);
                 currentSpawnable.ChangeChildrenParent(transform);
