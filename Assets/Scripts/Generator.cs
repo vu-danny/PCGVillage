@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Utility.UnityExtensions;
-
 public class Generator : Spawner
 {
     private Queue<Spawner> spawnersQueue;
-    private List<Bounds> spawnedBounds;
-    private Dictionary<Spawner, Bounds> spawnerBounds;
+    private List<TransformableBounds> spawnedBounds;
+    private Dictionary<Spawner, TransformableBounds> spawnerBounds;
     private List<Spawner> subSpawnersContainer;
     
     [SerializeField] private bool refreshResult = true;
@@ -17,10 +15,10 @@ public class Generator : Spawner
     {
         base.Awake();
         spawnersQueue = new Queue<Spawner>();
-        spawnedBounds = new List<Bounds>();
+        spawnedBounds = new List<TransformableBounds>();
         subSpawnersContainer = new List<Spawner>();
         refreshResult = true;
-        spawnerBounds = new Dictionary<Spawner, Bounds>();
+        spawnerBounds = new Dictionary<Spawner, TransformableBounds>();
     }
 
     private IEnumerator Start()
@@ -42,9 +40,12 @@ public class Generator : Spawner
             {
                 refreshResult = false;
                 success = SpawnRemainingPrefabs(initialSpawnable);
-                if(!success){
+                if(!success)
+                {
                     Debug.Log("fail");
                 }
+                success = false;
+                yield return null;
             }
             yield return null;
         }
@@ -63,25 +64,19 @@ public class Generator : Spawner
         spawnedBounds.Add(initialSpawnable.GetTransformedBounds());
         EnqueueSubSpawners(initialSpawnable);
     
-        List<Bounds> boundsToCheck = new List<Bounds>();
+        List<TransformableBounds> boundsToCheck = new List<TransformableBounds>();
 
         while (spawnersQueue.Count > 0)
         {
             Spawner currentSpawner = spawnersQueue.Dequeue();
-
-            
-            if(spawnerBounds.Remove(currentSpawner)){
-                Debug.DrawRay(currentSpawner.GetTransformedBounds().center, Vector3.up*4, Color.green, 1.0f);
-            }else{
-                Debug.DrawRay(currentSpawner.GetTransformedBounds().center, Vector3.up*4, Color.red, 1.0f);
-            }
+            spawnerBounds.Remove(currentSpawner);
 
             boundsToCheck.Clear();
             boundsToCheck.AddRange(spawnedBounds);
             boundsToCheck.AddRange(spawnerBounds.Values);
 
             currentSpawner.ResetPrefabs();
-            Spawnable currentSpawnable = currentSpawner.SpawnWithBoundsCheck((boundsToCheck).AsReadOnly());
+            Spawnable currentSpawnable = currentSpawner.SpawnWithBoundsCheck(boundsToCheck.AsReadOnly());
 
             if (currentSpawnable != null)
             {
@@ -94,29 +89,19 @@ public class Generator : Spawner
             }
             else 
             {
-                foreach(Bounds bound in boundsToCheck)
+#if UNITY_EDITOR
+                foreach(TransformableBounds bounds in boundsToCheck)
                 {
-                    DrawBounds(bound, Color.red);
+                    bounds.DrawDebug(Color.red, 3.0f);
                 }
-                DrawBounds(currentSpawner.GetTransformedBounds(), Color.blue);
+                currentSpawner.GetTransformedBounds().DrawDebug(Color.blue, 3.0f);
+#endif
                 return false;
                 //yield return new WaitForSeconds(3.0f);
             }
         }
 
         return true;
-    }
-
-    private void DrawBounds(Bounds bounds, Color color)
-    {
-        Vector3[] corners = bounds.GetCorners();
-        for (int i = 0; i < corners.Length; i++)
-        {
-            for (int j = i; j < corners.Length; j++)
-            {
-                Debug.DrawLine(corners[i], corners[j], color, 3.0f);
-            }
-        }
     }
 
     private void ClearChildren()

@@ -21,18 +21,19 @@ public class Spawner : MonoBehaviour
         spawnableSet.CopyTo(remainingPrefabs);
     }
 
-    public Bounds GetTransformedBounds(){
-        return bounds.TransformBounds(transform);
+    public TransformableBounds GetTransformedBounds()
+    {
+        return new TransformableBounds(bounds, transform.localToWorldMatrix);
     }
 
-    public bool InterectsWith(Bounds otherBounds)
+    public bool InterectsWith(TransformableBounds otherBounds)
     {
-        Bounds transformedBounds = GetTransformedBounds();
+        TransformableBounds transformedBounds = GetTransformedBounds();
         return transformedBounds.Intersects(otherBounds);
     }
 
     // Returns spawnable if successfully spawned
-    public Spawnable SpawnWithBoundsCheck(ReadOnlyCollection<Bounds> spawnedBounds)
+    public Spawnable SpawnWithBoundsCheck(ReadOnlyCollection<TransformableBounds> spawnedBounds)
     {
         do
         {
@@ -45,23 +46,25 @@ public class Spawner : MonoBehaviour
                 while (spawnable.PlaceRandomAnchorRelativeTo(transform))
                 {
                     bool intersectionFound = false;
-                    foreach (Bounds sBounds in spawnedBounds)
+                    foreach (TransformableBounds bounds in spawnedBounds)
                     {
-                        if (spawnable.InterectsWith(sBounds))
+                        if (spawnable.InterectsWith(bounds))
                         {
                             intersectionFound = true;
                             Destroy(spawnedObject);
                         }
 
-                        foreach(Bounds spawnerBound in spawnable.GetSpawnerBounds()){
-                            if (spawnerBound.Intersects(sBounds)){
+                        foreach(TransformableBounds spawnerBound in spawnable.GetSpawnerBounds())
+                        {
+                            if (spawnerBound.Intersects(bounds))
+                            {
                                 intersectionFound = true;
                                 Destroy(spawnedObject);
                                 break;
                             }
                         }
 
-                        if(intersectionFound)
+                        if (intersectionFound)
                             break;
                     }
 
@@ -128,7 +131,8 @@ public class Spawner : MonoBehaviour
             EventType.Repaint
         );
 
-        Bounds drawnBounds = GetTransformedBounds();
+        TransformableBounds transformedBounds = GetTransformedBounds();
+        Bounds drawnBounds = transformedBounds.bounds;
         if (drawnBounds.size.x < 0 || drawnBounds.size.y < 0 || drawnBounds.size.z < 0)
         {
             Gizmos.color = Color.Lerp(Color.white, Color.red, 0.75f);
@@ -137,7 +141,9 @@ public class Spawner : MonoBehaviour
         {
             Gizmos.color = Color.cyan;
         }
+        Gizmos.matrix = transformedBounds.transformationMatrix;
         Gizmos.DrawWireCube(drawnBounds.center, drawnBounds.size);
+        Gizmos.matrix = Matrix4x4.identity;
     }
     #endif
 }

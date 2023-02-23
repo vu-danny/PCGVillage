@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-using Utility.UnityExtensions;
-
 public class Spawnable : MonoBehaviour
 {
     [Header("Positioning")]
@@ -31,19 +29,23 @@ public class Spawnable : MonoBehaviour
         return true;
     }
     
-    public bool InterectsWith(Bounds otherBounds)
+    public bool InterectsWith(TransformableBounds otherBounds)
     {
-        Bounds transformedBounds = GetTransformedBounds();
+        TransformableBounds transformedBounds = GetTransformedBounds();
         return transformedBounds.Intersects(otherBounds);
     }
 
-    public Bounds GetTransformedBounds(){
-        return bounds.TransformBounds(transform, boundsInnerMargin);
+    public TransformableBounds GetTransformedBounds()
+    {
+        Bounds boundsWithInnerMargin = bounds;
+        boundsWithInnerMargin.extents -= Vector3.one * boundsInnerMargin; 
+        return new TransformableBounds(boundsWithInnerMargin, transform.localToWorldMatrix);
     }
 
-    public List<Bounds> GetSpawnerBounds(){
-        List<Bounds> subSpawnerBounds = new List<Bounds>();
-        foreach(Spawner subSpawner in subSpawners){
+    public List<TransformableBounds> GetSpawnerBounds(){
+        List<TransformableBounds> subSpawnerBounds = new List<TransformableBounds>();
+        foreach(Spawner subSpawner in subSpawners)
+        {
             subSpawnerBounds.Add(subSpawner.GetTransformedBounds());
         }
         return subSpawnerBounds;
@@ -74,7 +76,9 @@ public class Spawnable : MonoBehaviour
     #if UNITY_EDITOR
     private void OnDrawGizmos() 
     {
-        Bounds drawnBounds = GetTransformedBounds();
+        TransformableBounds transformedBounds = GetTransformedBounds();
+        Bounds drawnBounds = transformedBounds.bounds;
+
         if (drawnBounds.size.x < 0 || drawnBounds.size.y < 0 || drawnBounds.size.z < 0)
         {
             Gizmos.color = Color.Lerp(Color.white, Color.red, 0.75f);
@@ -83,7 +87,9 @@ public class Spawnable : MonoBehaviour
         {
             Gizmos.color = Color.white;
         }
+        Gizmos.matrix = transformedBounds.transformationMatrix;
         Gizmos.DrawWireCube(drawnBounds.center, drawnBounds.size);
+        Gizmos.matrix = Matrix4x4.identity;
     }
 
     private void OnDrawGizmosSelected()

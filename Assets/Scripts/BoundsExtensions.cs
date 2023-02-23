@@ -67,22 +67,6 @@ namespace Utility.UnityExtensions
                         }
                     }
         }
-
-        public static Bounds TransformBounds(this Bounds bounds, Matrix4x4 transformation)
-        {
-            return GeometryUtility.CalculateBounds(bounds.GetCorners(), transformation);
-        }
-
-        public static Bounds TransformBounds(this Bounds bounds, Transform transform, float innerMargin = 0.0f)
-        {
-            Bounds transformedBounds = bounds.TransformBounds(Matrix4x4.TRS(
-                    transform.position, 
-                    transform.rotation, 
-                    Vector3.one
-                ));
-            transformedBounds.extents -= Vector3.one * innerMargin;
-            return transformedBounds;
-        }
         
         // Mostly taken from https://answers.unity.com/questions/1840803/calculate-collision-between-2-rotated-boxes-withou.html
         public static bool Intersects(this Bounds bounds, Matrix4x4 transformation, Bounds other, Matrix4x4 otherTransformation)
