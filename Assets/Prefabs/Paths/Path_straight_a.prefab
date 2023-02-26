@@ -177,9 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5c25613de38eb4eb97b371c42b281a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds:
-    m_Center: {x: 0, y: 0.75, z: 0}
-    m_Extent: {x: 3, y: 0.75, z: 1.5}
+  boundsParts:
+  - {fileID: 2434793793608511570}
   boundsInnerMargin: 0.001
   anchors:
   - {fileID: 4663761089740137330}

@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5c25613de38eb4eb97b371c42b281a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds:
-    m_Center: {x: 0, y: 0.75, z: 1}
-    m_Extent: {x: 4.25, y: 0.75, z: 2.5}
+  boundsParts:
+  - {fileID: 3821105426287703672}
+  - {fileID: 3525225730506056929}
   boundsInnerMargin: 0.001
   anchors:
   - {fileID: 1800739807483419210}
