@@ -264,6 +264,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8908642811834123075, guid: a64f2bf4d9e72854fa2dae72ea472434,
         type: 3}
+      propertyPath: spawnableSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a3bb81bd83892840a4db2ce14d2f8c9,
+        type: 2}
+    - target: {fileID: 8908642811834123075, guid: a64f2bf4d9e72854fa2dae72ea472434,
+        type: 3}
       propertyPath: spawnablePrefabs.Array.data[6].prefab
       value: 
       objectReference: {fileID: 0}
