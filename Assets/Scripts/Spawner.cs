@@ -34,6 +34,13 @@ public class Spawner : MonoBehaviour
     // Returns spawnable if successfully spawned
     public Spawnable SpawnWithBoundsCheck(ReadOnlyCollection<TransformableBounds> spawnedBounds)
     {
+        List<TransformableBounds> boundsToCheck = new List<TransformableBounds>();
+        foreach (TransformableBounds currentBounds in spawnedBounds){
+            if((currentBounds.GetCenter()-transform.position).sqrMagnitude < 2250){
+                boundsToCheck.Add(currentBounds);
+            }
+        }
+
         do
         {
             GameObject spawnedObject = SpawnRandomPrefab();
@@ -45,12 +52,13 @@ public class Spawner : MonoBehaviour
                 while (spawnable.PlaceRandomAnchorRelativeTo(transform))
                 {
                     bool intersectionFound = false;
-                    foreach (TransformableBounds bounds in spawnedBounds)
+                    foreach (TransformableBounds bounds in boundsToCheck)
                     {
                         if (spawnable.InterectsWith(bounds))
                         {
                             intersectionFound = true;
                             Destroy(spawnedObject);
+                            break;
                         }
 
                         foreach(TransformableBounds spawnerBound in spawnable.GetSpawnerBounds())

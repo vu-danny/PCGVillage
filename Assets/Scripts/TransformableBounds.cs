@@ -34,6 +34,10 @@ public struct TransformableBounds
         return new TransformableBounds(bounds, this.transformationMatrix * transformationMatrix);
     }
 
+    public Vector3 GetCenter(){
+        return transformationMatrix.MultiplyPoint(Vector3.zero);
+    }
+
     public bool Intersects(TransformableBounds other)
     {
         return this.bounds.Intersects(transformationMatrix, other.bounds, other.transformationMatrix);
