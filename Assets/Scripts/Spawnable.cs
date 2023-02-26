@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 
 public class Spawnable : MonoBehaviour
@@ -11,8 +10,6 @@ public class Spawnable : MonoBehaviour
 
     [Header("Spawners")]
     [SerializeField] protected List<Spawner> subSpawners;
-    [SerializeField] protected List<Spawner> decorationSpawners;
-    public ReadOnlyCollection<Spawner> DecorationSpawners { get => decorationSpawners.AsReadOnly(); }
 
     // Returns whether an anchor was found and was used for placement
     public bool PlaceRandomAnchorRelativeTo(Transform referenceTransform)
@@ -31,9 +28,13 @@ public class Spawnable : MonoBehaviour
     
     public bool InterectsWith(TransformableBounds otherBounds)
     {
+        if (boundsParts.Length == 0)
+            return false;
+        
         TransformableBounds[] transformedBounds = GetTransformedBounds();
-        for(int i = 0; i<transformedBounds.Length; i++){
-            if(transformedBounds[i].Intersects(otherBounds))
+        for(int i = 0; i<transformedBounds.Length; i++)
+        {
+            if (transformedBounds[i].Intersects(otherBounds))
                 return true;
         }
         return false;
@@ -43,14 +44,16 @@ public class Spawnable : MonoBehaviour
     {
         TransformableBounds[] transformedBounds = new TransformableBounds[boundsParts.Length];
         Bounds baseBounds = new Bounds(Vector3.zero,Vector3.one);
-        for(int i = 0; i<boundsParts.Length; i++){
+        for(int i = 0; i < boundsParts.Length; i++)
+        {
             Matrix4x4 boundsPartMatrix = Matrix4x4.TRS(boundsParts[i].position, boundsParts[i].rotation, boundsParts[i].lossyScale - Vector3.one*boundsInnerMargin);
             transformedBounds[i] = new TransformableBounds(baseBounds, boundsPartMatrix);
         }
         return transformedBounds;
     }
 
-    public List<TransformableBounds> GetSpawnerBounds(){
+    public List<TransformableBounds> GetSpawnerBounds()
+    {
         List<TransformableBounds> subSpawnerBounds = new List<TransformableBounds>();
         foreach(Spawner subSpawner in subSpawners)
         {
