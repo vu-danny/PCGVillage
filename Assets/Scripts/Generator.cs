@@ -17,6 +17,7 @@ public class Generator : Spawner
     {
         base.Awake();
         mainSpawnersQueue = new Queue<Spawner>();
+        optionalSpawnersQueue = new Queue<Spawner>();
         spawnedBounds = new List<TransformableBounds>();
         subSpawnersContainer = new List<Spawner>();
         optionalSpawnersContainer = new List<Spawner>();
@@ -26,22 +27,28 @@ public class Generator : Spawner
 
     private IEnumerator Start()
     {
-        // Retrieve and spawn initial spawnable   
-        ResetPrefabs();
-        GameObject initialPrefab = GetRandomSpawnablePrefab();
-        remainingPrefabs.Clear();
-        
-        GameObject initialObject = Instantiate(initialPrefab);
-        Spawnable initialSpawnable = initialObject.GetComponent<Spawnable>();
-        initialSpawnable.AlignUsingRandomAnchor(transform);
-
         // "Consume" remaining spawners
         bool success = false;
+
+        GameObject initialObject = null;
         while (true)
         {
             while (refreshResult || !success)
             {
                 refreshResult = false;
+
+                // Retrieve and spawn initial spawnable   
+                ResetPrefabs();
+                GameObject initialPrefab = GetRandomSpawnablePrefab();
+                remainingPrefabs.Clear();
+                
+                if (initialObject != null)
+                    Destroy(initialObject);
+                initialObject = Instantiate(initialPrefab);
+                Spawnable initialSpawnable = initialObject.GetComponent<Spawnable>();
+                initialSpawnable.AlignUsingRandomAnchor(transform);
+
+                // Attempt to spawn remaining prefabs
                 success = SpawnRemainingPrefabs(initialSpawnable);
                 if(!success)
                 {
