@@ -95,7 +95,6 @@ public class Generator : Spawner
             if (currentSpawnable != null)
             {
                 spawnedBounds.AddRange(currentSpawnable.GetTransformedBounds());
-                
                 EnqueueSpawners(currentSpawnable);
                 currentSpawnable.ChangeChildrenParent(transform);
                 Destroy(currentSpawnable.gameObject);
@@ -130,7 +129,7 @@ public class Generator : Spawner
             if (currentSpawnable != null)
             {
                 spawnedBounds.AddRange(currentSpawnable.GetTransformedBounds());
-                //EnqueueSpawners(currentSpawnable);
+                EnqueueSpawners(currentSpawnable, true);
                 currentSpawnable.ChangeChildrenParent(transform);
                 Destroy(currentSpawnable.gameObject);
             }
@@ -147,23 +146,24 @@ public class Generator : Spawner
         }
     }
 
-    private void EnqueueSpawners(Spawnable spawnable)
+    private void EnqueueSpawners(Spawnable spawnable, bool onlyOptional = false)
     {
-        subSpawnersContainer.Clear();
-        spawnable.GetSubSpawnersInRandomOrder(subSpawnersContainer);
-
         optionalSpawnersContainer.Clear();
-
         spawnable.GetOptionalSpawnersInRandomOrder(optionalSpawnersContainer);
 
+        foreach (Spawner optionalSpawner in optionalSpawnersContainer){
+            optionalSpawnersQueue.Enqueue(optionalSpawner);
+        }
+
+        if (onlyOptional)
+            return;
+        
+        subSpawnersContainer.Clear();
+        spawnable.GetSubSpawnersInRandomOrder(subSpawnersContainer);
 
         foreach (Spawner subSpawner in subSpawnersContainer){
             mainSpawnersQueue.Enqueue(subSpawner);
             spawnerBounds.Add(subSpawner, subSpawner.GetTransformedBounds());
-        }
-
-        foreach (Spawner optionalSpawner in optionalSpawnersContainer){
-            optionalSpawnersQueue.Enqueue(optionalSpawner);
         }
     }
 }

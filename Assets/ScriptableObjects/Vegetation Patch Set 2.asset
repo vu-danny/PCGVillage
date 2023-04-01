@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ae45b541df73b48b4a8e6ed20467d5, type: 3}
+  m_Name: Vegetation Patch Set 2
+  m_EditorClassIdentifier: 
+  spawnablePrefabs:
+  - prefab: {fileID: 8253196960831782435, guid: 0e54ec952b0534d419d333b39842ca8a,
+      type: 3}
+    weight: 11
+  - prefab: {fileID: 2255843538673933505, guid: 5017252301ad1b847ad78b07d1471c58,
+      type: 3}
+    weight: 2
