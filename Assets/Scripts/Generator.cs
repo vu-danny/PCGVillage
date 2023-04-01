@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class Generator : Spawner
 {
-    private Queue<Spawner> spawnersQueue;
+    private Queue<Spawner> mainSpawnersQueue;
+    private Queue<Spawner> optionalSpawnersQueue;
     private List<TransformableBounds> spawnedBounds;
     private Dictionary<Spawner, TransformableBounds> spawnerBounds;
     private List<Spawner> subSpawnersContainer;
+    private List<Spawner> optionalSpawnersContainer;
     
     [SerializeField] private bool refreshResult = true;
 
     protected override void Awake() 
     {
         base.Awake();
-        spawnersQueue = new Queue<Spawner>();
+        mainSpawnersQueue = new Queue<Spawner>();
         spawnedBounds = new List<TransformableBounds>();
         subSpawnersContainer = new List<Spawner>();
+        optionalSpawnersContainer = new List<Spawner>();
         refreshResult = true;
         spawnerBounds = new Dictionary<Spawner, TransformableBounds>();
     }
@@ -30,7 +33,7 @@ public class Generator : Spawner
         
         GameObject initialObject = Instantiate(initialPrefab);
         Spawnable initialSpawnable = initialObject.GetComponent<Spawnable>();
-        initialSpawnable.PlaceRandomAnchorRelativeTo(transform);
+        initialSpawnable.AlignUsingRandomAnchor(transform);
 
         // "Consume" remaining spawners
         bool success = false;
@@ -44,7 +47,6 @@ public class Generator : Spawner
                 {
                     Debug.Log("fail");
                 }
-                success = false;
                 yield return null;
             }
             yield return null;
@@ -58,17 +60,17 @@ public class Generator : Spawner
         ClearChildren();
 
         spawnedBounds.Clear();
-        spawnersQueue.Clear();
+        mainSpawnersQueue.Clear();
         spawnerBounds.Clear();
 
         spawnedBounds.AddRange(initialSpawnable.GetTransformedBounds());
-        EnqueueSubSpawners(initialSpawnable);
+        EnqueueSpawners(initialSpawnable);
     
         List<TransformableBounds> boundsToCheck = new List<TransformableBounds>();
 
-        while (spawnersQueue.Count > 0)
+        while (mainSpawnersQueue.Count > 0)
         {
-            Spawner currentSpawner = spawnersQueue.Dequeue();
+            Spawner currentSpawner = mainSpawnersQueue.Dequeue();
             spawnerBounds.Remove(currentSpawner);
 
             boundsToCheck.Clear();
@@ -78,11 +80,13 @@ public class Generator : Spawner
             currentSpawner.ResetPrefabs();
             Spawnable currentSpawnable = currentSpawner.SpawnWithBoundsCheck(boundsToCheck.AsReadOnly());
 
+            Destroy(currentSpawner.gameObject);
+
             if (currentSpawnable != null)
             {
                 spawnedBounds.AddRange(currentSpawnable.GetTransformedBounds());
                 
-                EnqueueSubSpawners(currentSpawnable);
+                EnqueueSpawners(currentSpawnable);
                 currentSpawnable.ChangeChildrenParent(transform);
                 Destroy(currentSpawnable.gameObject);
                 //yield return null;
@@ -101,6 +105,27 @@ public class Generator : Spawner
             }
         }
 
+        while (optionalSpawnersQueue.Count > 0)
+        {
+            Spawner currentSpawner = optionalSpawnersQueue.Dequeue();
+
+            boundsToCheck.Clear();
+            boundsToCheck.AddRange(spawnedBounds);
+
+            currentSpawner.ResetPrefabs();
+            Spawnable currentSpawnable = currentSpawner.SpawnWithBoundsCheck(boundsToCheck.AsReadOnly());
+            
+            Destroy(currentSpawner.gameObject);
+
+            if (currentSpawnable != null)
+            {
+                spawnedBounds.AddRange(currentSpawnable.GetTransformedBounds());
+                //EnqueueSpawners(currentSpawnable);
+                currentSpawnable.ChangeChildrenParent(transform);
+                Destroy(currentSpawnable.gameObject);
+            }
+        }
+
         return true;
     }
 
@@ -112,14 +137,23 @@ public class Generator : Spawner
         }
     }
 
-    private void EnqueueSubSpawners(Spawnable spawnable)
+    private void EnqueueSpawners(Spawnable spawnable)
     {
         subSpawnersContainer.Clear();
         spawnable.GetSubSpawnersInRandomOrder(subSpawnersContainer);
 
+        optionalSpawnersContainer.Clear();
+
+        spawnable.GetOptionalSpawnersInRandomOrder(optionalSpawnersContainer);
+
+
         foreach (Spawner subSpawner in subSpawnersContainer){
-            spawnersQueue.Enqueue(subSpawner);
+            mainSpawnersQueue.Enqueue(subSpawner);
             spawnerBounds.Add(subSpawner, subSpawner.GetTransformedBounds());
+        }
+
+        foreach (Spawner optionalSpawner in optionalSpawnersContainer){
+            optionalSpawnersQueue.Enqueue(optionalSpawner);
         }
     }
 }

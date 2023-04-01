@@ -49,7 +49,7 @@ public class Spawner : MonoBehaviour
             else
             {
                 Spawnable spawnable = spawnedObject.GetComponent<Spawnable>();
-                while (spawnable.PlaceRandomAnchorRelativeTo(transform))
+                while (spawnable.AlignUsingRandomAnchor(transform))
                 {
                     bool intersectionFound = false;
                     foreach (TransformableBounds bounds in boundsToCheck)

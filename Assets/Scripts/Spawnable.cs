@@ -10,9 +10,10 @@ public class Spawnable : MonoBehaviour
 
     [Header("Spawners")]
     [SerializeField] protected List<Spawner> subSpawners;
+    [SerializeField] protected List<Spawner> optionalSpawners;
 
     // Returns whether an anchor was found and was used for placement
-    public bool PlaceRandomAnchorRelativeTo(Transform referenceTransform)
+    public bool AlignUsingRandomAnchor(Transform referenceTransform)
     {
         if (anchors.Count <= 0)
             return false;
@@ -64,14 +65,24 @@ public class Spawnable : MonoBehaviour
 
     public void GetSubSpawnersInRandomOrder(ICollection<Spawner> resultsContainer)
     {
-        List<int> indicesToRetrieve = new List<int>(subSpawners.Count);
-        for (int i = 0; i < subSpawners.Count; i++)
+        GetContainerInRandomOrder(subSpawners, resultsContainer);
+    }
+
+    public void GetOptionalSpawnersInRandomOrder(ICollection<Spawner> resultsContainer)
+    {
+        GetContainerInRandomOrder(optionalSpawners, resultsContainer);
+    }
+
+    private void GetContainerInRandomOrder(List<Spawner> sourceContainer, ICollection<Spawner> resultsContainer)
+    {
+        List<int> indicesToRetrieve = new List<int>(sourceContainer.Count);
+        for (int i = 0; i < sourceContainer.Count; i++)
             indicesToRetrieve.Add(i);
 
         while (indicesToRetrieve.Count > 0)
         {
             int randomIndex = Random.Range(0, indicesToRetrieve.Count);
-            resultsContainer.Add(subSpawners[indicesToRetrieve[randomIndex]]);
+            resultsContainer.Add(sourceContainer[indicesToRetrieve[randomIndex]]);
             indicesToRetrieve.RemoveAt(randomIndex);
         }
     }
