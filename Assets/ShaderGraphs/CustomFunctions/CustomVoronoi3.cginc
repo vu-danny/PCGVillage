@@ -1,4 +1,7 @@
-inline float2 voronoi_noise_randomVector (float2 UV, float offset){
+// pseudo-triplanar Voronoi
+// Mostly adapted from : https://cyangamedev.wordpress.com/2019/07/16/voronoi/
+inline float2 voronoi_noise_randomVector (float2 UV, float offset)
+{
     float2x2 m = float2x2(15.27, 47.63, 99.41, 89.98);
     UV = frac(sin(mul(UV, m)) * 46839.32);
     return float2(sin(UV.y*+offset)*0.5+0.5, cos(UV.x*offset)*0.5+0.5);
