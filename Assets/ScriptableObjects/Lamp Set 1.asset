@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ae45b541df73b48b4a8e6ed20467d5, type: 3}
+  m_Name: Lamp Set 1
+  m_EditorClassIdentifier: 
+  spawnablePrefabs:
+  - prefab: {fileID: 6424344599706688756, guid: 60d9a7d2dd57eab4fb86ce495689f0d2,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 8153747034895570240, guid: 1dafde3d8907e5244a6fb707d12545ab,
+      type: 3}
+    weight: 1
