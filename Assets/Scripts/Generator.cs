@@ -60,7 +60,10 @@ public class Generator : Spawner
         ClearChildren();
 
         spawnedBounds.Clear();
+        
         mainSpawnersQueue.Clear();
+        optionalSpawnersQueue.Clear();
+
         spawnerBounds.Clear();
 
         spawnedBounds.AddRange(initialSpawnable.GetTransformedBounds());
