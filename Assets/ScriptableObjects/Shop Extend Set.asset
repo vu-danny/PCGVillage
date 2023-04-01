@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ae45b541df73b48b4a8e6ed20467d5, type: 3}
+  m_Name: Shop Extend Set
+  m_EditorClassIdentifier: 
+  spawnablePrefabs:
+  - prefab: {fileID: 767715180851996135, guid: fdc29a7b2b9dd7e4391e5e57b320decf, type: 3}
+    weight: 7
+  - prefab: {fileID: 9180857747991034220, guid: 842ca53129416c047a9d0f57d6189732,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 2698852599607611774, guid: ef19b672700610841b87ff30c740ca5a,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 5272038417997467405, guid: 0723e599b40be8944b29d2b2487e990e,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 3051427723587682659, guid: bc945757840dd224982a1e72ba7db7a4,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 804180023832692750, guid: 028b24c5e89f0aa438ecf8ce0f015572, type: 3}
+    weight: 3

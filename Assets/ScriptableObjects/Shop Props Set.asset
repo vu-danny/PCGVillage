@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ae45b541df73b48b4a8e6ed20467d5, type: 3}
+  m_Name: Shop Props Set
+  m_EditorClassIdentifier: 
+  spawnablePrefabs:
+  - prefab: {fileID: 1203792838961368590, guid: 995b7896a58dfd24ea1cb64c2e02753b,
+      type: 3}
+    weight: 2
+  - prefab: {fileID: 8885005551284315022, guid: e68bf9abffae83c4e8c7a864dfd611a9,
+      type: 3}
+    weight: 2
+  - prefab: {fileID: 1964693888941057472, guid: e3c576ee29f484647aaf0c157c38ef95,
+      type: 3}
+    weight: 2
+  - prefab: {fileID: 2110837841431726321, guid: f2ed7874d7439e74b9a84094970c9dbb,
+      type: 3}
+    weight: 2
+  - prefab: {fileID: 79236096050132108, guid: ea563defb3765a042af876e41e582aae, type: 3}
+    weight: 2
+  - prefab: {fileID: 8299048211316374373, guid: 38aec79eb1332944a8393746bc13e882,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 1055418254762910510, guid: 6b80269bfdb04954f8a51b6c59819bd3,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 0}
+    weight: 15
