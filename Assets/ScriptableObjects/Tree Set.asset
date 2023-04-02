@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ae45b541df73b48b4a8e6ed20467d5, type: 3}
+  m_Name: Tree Set
+  m_EditorClassIdentifier: 
+  spawnablePrefabs:
+  - prefab: {fileID: 8161151937235677478, guid: 9515fb7df9d6e3641a188d10bd01860c,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 3543568435792940985, guid: 37556f083f264e6489de48c10438e7dc,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 7976215134754732296, guid: 5a096af4527661f46bc11a46cb4f06cf,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 7928870000876032036, guid: a6576c62412c01f419f2d895843e50d8,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 0}
+    weight: 7
+  - prefab: {fileID: 4719085344606969283, guid: 4cf81f7ac53f4d74f91642260bb7d4ca,
+      type: 3}
+    weight: 1
