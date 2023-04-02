@@ -94,6 +94,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_a
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 5462d7981caf2b1428cbc434c37493cb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5462d7981caf2b1428cbc434c37493cb, type: 3}
       propertyPath: m_RootOrder
       value: 1

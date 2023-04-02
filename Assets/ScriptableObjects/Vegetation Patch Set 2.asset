@@ -15,7 +15,7 @@ MonoBehaviour:
   spawnablePrefabs:
   - prefab: {fileID: 8253196960831782435, guid: 0e54ec952b0534d419d333b39842ca8a,
       type: 3}
-    weight: 11
+    weight: 15
   - prefab: {fileID: 2255843538673933505, guid: 5017252301ad1b847ad78b07d1471c58,
       type: 3}
-    weight: 2
+    weight: 1
