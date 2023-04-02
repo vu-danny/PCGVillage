@@ -13,6 +13,23 @@ MonoBehaviour:
   m_Name: Vegetation Set
   m_EditorClassIdentifier: 
   spawnablePrefabs:
-  - prefab: {fileID: 8253196960831782435, guid: 0e54ec952b0534d419d333b39842ca8a,
+  - prefab: {fileID: 8253196960831782435, guid: 1014a0e6acfca704dad6f5c92528844b,
+      type: 3}
+    weight: 20
+  - prefab: {fileID: 6896029113305490400, guid: 4c4ad581c64e0eb49823619ae4c359a4,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 186582324875602739, guid: 592789747b5ce524e9860d8466fc0856, type: 3}
+    weight: 1
+  - prefab: {fileID: 2333919497454865551, guid: f8dde4fa2f3c2414abba0e15123d3d96,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 1181497112685370800, guid: 411e11d93dece8247b3d1e23f7cbb756,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 1019316350989388758, guid: 9cee56764cddc13468c3fce704b570f5,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 3584786909915142694, guid: 2583dbd83a69e624781ece34456accd4,
       type: 3}
     weight: 1
