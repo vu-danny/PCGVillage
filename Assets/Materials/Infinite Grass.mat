@@ -39,14 +39,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Metallic: 1
+    - _Metallic: 0.633
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0.757
+    - _Smoothness: 0.2
     m_Colors:
     - _Albedo_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
-    - _Scale: {r: 5, g: 5, b: 0, a: 0}
+    - _Scale: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &5511000384174059731
 MonoBehaviour:
