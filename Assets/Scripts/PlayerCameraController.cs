@@ -7,12 +7,13 @@ namespace Main
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private Transform playerTransform;
         [SerializeField] private float mouseSensitivity = 7.5f;
-
+        
         private float cameraVerticalRotation = 0;
 
         private void OnEnable()
         {
             Cursor.lockState = CursorLockMode.Locked;
+            cameraVerticalRotation = cameraTransform.rotation.eulerAngles.x;
         }
 
         private void OnDisable()
