@@ -9,7 +9,7 @@ public class Generator : Spawner
     public int MainSpawnersQueueLength { get => mainSpawnersQueue.Count; }
     private Queue<Spawner> optionalSpawnersQueue;
     public int OptionalSpawnersQueueLength { get => optionalSpawnersQueue.Count; }
-    private List<TransformableBounds> spawnedBounds;
+    private List<TransformableBounds> placedBounds;
     private Dictionary<Spawner, TransformableBounds> spawnerBounds;
     private List<Spawner> subSpawnersContainer;
     private List<Spawner> optionalSpawnersContainer;
@@ -25,7 +25,7 @@ public class Generator : Spawner
         base.Awake();
         mainSpawnersQueue = new Queue<Spawner>();
         optionalSpawnersQueue = new Queue<Spawner>();
-        spawnedBounds = new List<TransformableBounds>();
+        placedBounds = new List<TransformableBounds>();
         subSpawnersContainer = new List<Spawner>();
         optionalSpawnersContainer = new List<Spawner>();
         refreshResult = true;
@@ -71,14 +71,14 @@ public class Generator : Spawner
     {
         ClearChildren();
 
-        spawnedBounds.Clear();
+        placedBounds.Clear();
         
         mainSpawnersQueue.Clear();
         optionalSpawnersQueue.Clear();
 
         spawnerBounds.Clear();
 
-        spawnedBounds.AddRange(initialSpawnable.GetTransformedBounds());
+        placedBounds.AddRange(initialSpawnable.GetTransformedBounds());
         EnqueueSpawners(initialSpawnable);
     
         List<TransformableBounds> boundsToCheck = new List<TransformableBounds>();
@@ -90,7 +90,7 @@ public class Generator : Spawner
             spawnerBounds.Remove(currentSpawner);
 
             boundsToCheck.Clear();
-            boundsToCheck.AddRange(spawnedBounds);
+            boundsToCheck.AddRange(placedBounds);
             boundsToCheck.AddRange(spawnerBounds.Values);
 
             currentSpawner.ResetPrefabs();
@@ -100,7 +100,7 @@ public class Generator : Spawner
 
             if (currentSpawnable != null)
             {
-                spawnedBounds.AddRange(currentSpawnable.GetTransformedBounds());
+                placedBounds.AddRange(currentSpawnable.GetTransformedBounds());
                 EnqueueSpawners(currentSpawnable);
                 currentSpawnable.ChangeChildrenParent(transform);
                 Destroy(currentSpawnable.gameObject);
@@ -116,7 +116,7 @@ public class Generator : Spawner
                 continue;
 
             boundsToCheck.Clear();
-            boundsToCheck.AddRange(spawnedBounds);
+            boundsToCheck.AddRange(placedBounds);
 
             currentSpawner.ResetPrefabs();
             Spawnable currentSpawnable = currentSpawner.SpawnWithBoundsCheck(boundsToCheck.AsReadOnly());
@@ -125,7 +125,7 @@ public class Generator : Spawner
 
             if (currentSpawnable != null)
             {
-                spawnedBounds.AddRange(currentSpawnable.GetTransformedBounds());
+                placedBounds.AddRange(currentSpawnable.GetTransformedBounds());
                 EnqueueSpawners(currentSpawnable, true);
                 currentSpawnable.ChangeChildrenParent(transform);
                 Destroy(currentSpawnable.gameObject);
